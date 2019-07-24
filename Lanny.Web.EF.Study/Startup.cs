@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -31,6 +32,9 @@ namespace Lanny.Web.EF.Study
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
+            var connection = Configuration.GetConnectionString("SqlServer");
+            services.AddDbContext<Lanny.Web.EF.Test.CommService.ApplicationDbContext>(options =>
+                options.UseSqlServer(connection, b => b.MigrationsAssembly("Lanny.Web.EF.Study")));
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
